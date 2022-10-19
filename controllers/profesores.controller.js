@@ -47,3 +47,21 @@ exports.createProfesor = async function (req, res, next) {
         return res.status(400).json({status: 400, message: "Profesor Creation was Unsuccesfull"})
     }
 }
+
+exports.loginProfesor = async function (req, res, next) {
+    // Req.Body contains the form submit values.
+    console.log("llegue a login",req.body)
+    var Profesor = {
+        usuario: req.body.usuario,
+        password: req.body.password
+    }
+    try {
+        // Calling the Service function with the new object from the Request Body
+        let loginProfesor = await ProfesorService.loginProfesor(Profesor);
+        return res.status(201).json({token: loginEmpleado[0],rol: loginEmpleado[1] ,message: "Succesfully login"})
+
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: "Invalid username or password"})
+    }
+}
