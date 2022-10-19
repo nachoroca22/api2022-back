@@ -60,3 +60,29 @@ exports.createProfesor = async function (profesor) {
         throw Error("Error while Creating Empleado")
     }
 }
+
+exports.loginProfesor = async function (profesor) {
+
+    // Creating a new Mongoose Object by using the new keyword
+    
+    try {
+        console.log("hola",profesor)
+        // Find the Empleado 
+        var _details = await Profesor.findOne({
+            usuario: profesor.usuario
+        });
+        var passwordIsValid = bcrypt.compareSync(profesor.password, _details.password);
+        if (!passwordIsValid) throw Error("Invalid username/password")
+
+        var token = jwt.sign({
+            id: _details._id
+        }, process.env.SECRET, {
+            expiresIn: 86400 // expires in 24 hours
+        });
+        rol=_details.rol
+       return [token,rol];
+    } catch (e) {
+        // return a Error message describing the reason     
+        throw Error("Error while Login Profesor")
+    }
+}
