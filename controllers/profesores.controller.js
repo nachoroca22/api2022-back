@@ -58,7 +58,7 @@ exports.loginProfesor = async function (req, res, next) {
     try {
         // Calling the Service function with the new object from the Request Body
         let loginProfesor = await ProfesorService.loginProfesor(Profesor);
-        return res.status(201).json({token: loginEmpleado[0],rol: loginEmpleado[1] ,message: "Succesfully login"})
+        return res.status(201).json({token: loginProfesor[0],rol: loginProfesor[1] ,message: "Succesfully login"})
 
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
