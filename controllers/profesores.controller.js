@@ -72,7 +72,7 @@ exports.getProfesor = async function (req, res, next){
     }
 
     try{
-        var profesor = await ProfesorService.getEmpleado(Profesor);
+        var profesor = await ProfesorService.getProfesor(Profesor);
         if(!profesor){
             return res.status(202).json({status: 202, message: "Profesor inexistente"})
         }
