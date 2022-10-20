@@ -12,8 +12,9 @@ router.get('/test', function(req, res, next) {
 
 // nuevo
 router.get('/', ProfesoresController.getProfesores)
+router.get('/home', ProfesoresController.getProfesor)  
 router.post('/altaprofesor', ProfesoresController.createProfesor)
 router.post('/login/', ProfesoresController.loginProfesor)
-    
+ 
 // Export the Router
 module.exports = router;

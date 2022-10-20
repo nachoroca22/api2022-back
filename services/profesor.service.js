@@ -87,3 +87,19 @@ exports.loginProfesor = async function (profesor) {
         throw Error("Error while Login Profesor")
     }
 }
+
+exports.getProfesor = async  function (profesor){
+    try {
+        var searchProfesor = await Profesor.findOne({
+            id_user: profesor.id_user
+        })
+        if(!searchProfesor){
+        }
+        else{
+            return searchProfesor;
+        }
+        
+    } catch (e) {
+            throw Error("Error occured while Finding the Profesor")
+        }  
+}
