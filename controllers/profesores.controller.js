@@ -68,7 +68,7 @@ exports.loginProfesor = async function (req, res, next) {
 
 exports.getProfesor = async function (req, res, next){
     var Profesor = {
-        dni: req.body.dni,
+        id_user: req.body.id_user,
     }
 
     try{
