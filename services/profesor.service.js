@@ -88,10 +88,10 @@ exports.loginProfesor = async function (profesor) {
     }
 }
 
-exports.getProfesor = async  function (profesor){
+exports.getProfesor = async  function (id_user){
     try {
         var searchProfesor = await Profesor.findOne({
-            id_user: profesor.id_user
+            id_user: id_user
         })
         if(!searchProfesor){
         }
