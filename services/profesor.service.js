@@ -92,7 +92,7 @@ exports.getProfesor = async  function (profesor){
     try {
         console.log("hola",profesor)
         var searchProfesor = await Profesor.findOne({
-            id_user: profesor
+            id_user: profesor.id_user
         })
         if(!searchProfesor){
         }
