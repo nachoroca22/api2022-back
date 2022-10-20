@@ -65,3 +65,21 @@ exports.loginProfesor = async function (req, res, next) {
         return res.status(400).json({status: 400, message: "Invalid username or password"})
     }
 }
+
+exports.getProfesor = async function (req, res, next){
+    var Profesor = {
+        dni: req.body.dni,
+    }
+
+    try{
+        var profesor = await ProfesorService.getEmpleado(Profesor);
+        if(!profesor){
+            return res.status(202).json({status: 202, message: "Profesor inexistente"})
+        }
+        return res.status(200).json({status: 200, data: profesor, message: "Profesor encontrado"})
+        
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message})
+    }
+
+}
