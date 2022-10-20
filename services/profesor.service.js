@@ -80,7 +80,7 @@ exports.loginProfesor = async function (profesor) {
             expiresIn: 86400 // expires in 24 hours
         });
         rol=_details.rol
-       return [token,rol];
+       return [token,rol,id_user];
     } catch (e) {
         // return a Error message describing the reason     
         throw Error("Error while Login Profesor")

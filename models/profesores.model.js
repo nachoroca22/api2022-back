@@ -3,7 +3,7 @@ var mongoosePaginate = require('mongoose-paginate')
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var ProfesorSchema = new mongoose.Schema({
-    id_profe: Number,
+    id_user: Number,
     name: String,
     apellido: String,
     fechaNac: String,
@@ -25,7 +25,7 @@ var ProfesorSchema = new mongoose.Schema({
     versionKey: false // You should be aware of the outcome after set to false
 });
 
-ProfesorSchema.plugin(AutoIncrement, {inc_field: 'id_profe'});
+ProfesorSchema.plugin(AutoIncrement, {inc_field: 'id_user'});
 ProfesorSchema.plugin(mongoosePaginate)
 const Profesor = mongoose.model('Profesor', ProfesorSchema)
 
