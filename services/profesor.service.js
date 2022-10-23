@@ -57,7 +57,7 @@ exports.createProfesor = async function (profesor) {
     } catch (e) {
         // return a Error message describing the reason 
         console.log(e)    
-        throw Error("Error while Creating Empleado")
+        throw Error("Error while Creating Profesor")
     }
 }
 
@@ -102,5 +102,21 @@ exports.getProfesor = async  function (profesor){
         
     } catch (e) {
             throw Error("Error occured while Finding the Profesor")
+        }  
+}
+
+exports.getContratacionesByProfesor = async  function (contratacion){
+    try {
+        var searchContrataciones = await Profesor.findOne({
+            id_user: contratacion.id_user
+        })
+        if(!searchContrataciones){
+        }
+        else{
+            return searchContrataciones;
+        }
+        
+    } catch (e) {
+            throw Error("Error occured while Finding the Contrataciones")
         }  
 }

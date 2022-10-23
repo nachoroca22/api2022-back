@@ -83,3 +83,21 @@ exports.getProfesor = async function (req, res, next){
     }
 
 }
+
+exports.getContrataciones = async function (req, res, next){
+    var Contratacion = {
+        id_user: req.body.id_user,
+    }
+
+    try{
+        var profesor = await ProfesorService.getContrataciones(Profesor);
+        if(!profesor){
+            return res.status(202).json({status: 202, message: "Profesor inexistente"})
+        }
+        return res.status(200).json({status: 200, data: profesor, message: "Profesor encontrado"})
+        
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message})
+    }
+
+}

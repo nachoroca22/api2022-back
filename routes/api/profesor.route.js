@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var ProfesoresController = require('../../controllers/profesores.controller');
+//var ContratacionesController = require('../../controllers/contrataciones.controller')
 var Authorization = require('../../auth/authorization');
 
 
@@ -15,6 +16,10 @@ router.get('/', ProfesoresController.getProfesores)
 router.put('/home', ProfesoresController.getProfesor)  
 router.post('/altaprofesor', ProfesoresController.createProfesor)
 router.post('/login/', ProfesoresController.loginProfesor)
+//router.put('/contrataciones', ContratacionesController.getContratacionesByProfesor)  
+
+
+
  
 // Export the Router
 module.exports = router;
