@@ -38,6 +38,8 @@ exports.createClase = async function (clase) {
         duracion: clase.duracion,
         descripcion: clase.descripcion,
         id_profesor: clase.id_profesor,
+        calificacion: 0,
+        contrataciones: 0,
     })
 
     try {
@@ -51,10 +53,115 @@ exports.createClase = async function (clase) {
     }
 }
 
+exports.updateClase = async function (clase) {
+
+    try {
+        //Find the old User Object by the Id
+        var oldClase = await Clase.findOne({
+            id_clase: clase.id_clase
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Clase")
+    }
+    // If no old Alumno Object exists return false
+    if (!oldClase) {
+        return false;
+    }
+    //Edit the Alumno Object
+        oldClase.tipoClase = clase.tipoClase
+        oldClase.costo = clase.costo
+        oldClase.frecuencia = clase.frecuencia
+        oldClase.duracion = clase.duracion
+        oldClase.descripcion = clase.descripcion
+    
+    try {
+        var savedClase = await oldClase.save()
+        return savedClase;
+    } catch (e) {
+        throw Error("And Error occured while updating the Clase");
+    }
+}
+
 exports.getClase = async  function (clase){
     try {
         var searchClase = await Clase.findOne({
             id_clase: clase.id_clase
+        })
+        if(!searchClase){
+        }
+        else{
+            return searchClase;
+        }
+        
+    } catch (e) {
+            throw Error("Error occured while Finding the clase")
+        }  
+}
+
+exports.getClasesFiltros = async function (query, page, limit) {
+    // Options setup for the mongoose paginate
+    var options = {
+        page,
+        limit
+    }
+    try {
+        var ClasesFiltros = await Clase.aggregate([
+            {$lookup: {
+                from: 'profesors',
+                localField: 'id_profesor',
+                foreignField: 'id_user',
+                as: 'clases',
+            }},
+            // solo clases activas
+            {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
+            //{$match:{estado:true}},
+            {$project:{
+                materia:1,
+                tipoClase:1,
+                costo:1,
+                frecuencia:1,
+                calificacion:1,
+                duracion:1,
+                descripcion:1,
+                id_clase:1,
+                id_user:1,
+                name: 1,
+                apellido: 1,
+                }
+            },
+            // para paginar en mongo
+            {$setWindowFields: {output: {totalCount: {$count: {}}}}},
+            {$skip: 0 },
+            {$limit: 10 } 
+        ])
+        return ClasesFiltros;
+
+    }catch (e) {
+        throw Error("Error trayendo las clases");
+  }
+}
+
+exports.getMateriasFiltros = async function (query, page, limit) {
+    // Options setup for the mongoose paginate
+    var options = {
+        page,
+        limit
+    }
+    try {
+        var ClasesFiltros = await Clase.find().distinct('materia').sort()
+        ClasesFiltros.push("Todas")
+        return ClasesFiltros;
+
+    }catch (e) {
+        throw Error("Error trayendo las clases");
+  }
+}
+
+exports.getClasesProfesor = async  function (profesor){
+    try {
+        var searchClase = await Clase.paginate({
+            id_profesor: profesor.id_profesor,
+            estado: true
         })
         if(!searchClase){
         }

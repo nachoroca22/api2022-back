@@ -30,6 +30,8 @@ exports.createClase = async function (req, res, next) {
         duracion: req.body.duracion,
         descripcion: req.body.descripcion,
         id_profesor: req.body.id_profesor,
+        calificacion: 0,
+        contrataciones: 0,
 
     }
     try {
@@ -44,6 +46,35 @@ exports.createClase = async function (req, res, next) {
 }
 
 
+exports.updateClase = async function (req, res, next) {
+    
+    // Id is necessary for the update
+    if (!req.body.id_clase) {
+        return res.status(400).json({status: 400., message: "id_clase must be present"})
+    }
+    var id_clase = req.body.id_clase;
+    var Clase = {
+        id_clase,
+        tipoClase: req.body.tipoClase ? req.body.tipoClase : null,
+        costo: req.body.costo ? req.body.costo : null,
+        frecuencia: req.body.frecuencia ? req.body.frecuencia : null,
+        duracion: req.body.duracion ? req.body.duracion: null,
+        descripcion: req.body.duracion ? req.body.descripcion: null,
+    }
+    try {
+        var updateClase = await ClaseService.updateClase(Clase)
+        if(!updateClase){
+            return res.status(200).json({status: 200, data: updateClase, message: "Clase Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: updateClase, message: "Succesfully Updated Clase"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+
 exports.getClase = async function (req, res, next){
     var Clase = {
         id_clase: req.body.id_clase,
@@ -55,6 +86,54 @@ exports.getClase = async function (req, res, next){
             return res.status(202).json({status: 202, message: "Clase inexistente"})
         }
         return res.status(200).json({status: 200, data: clase, message: "Clase encontrada"})
+        
+    } catch (e) {
+        return res.status(400).json({status: 400, message: e.message})
+    }
+
+}
+
+exports.getClasesFiltros = async function (req, res, next) {
+
+    // Check the existence of the query parameters, If doesn't exists assign a default value
+    var page = req.query.page ? req.query.page : 1
+    var limit = req.query.limit ? req.query.limit : 10;
+    try {
+        var Clases = await ClaseService.getClasesFiltros({}, page, limit)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Clases, message: "Succesfully Clases Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+exports.getMateriasFiltros = async function (req, res, next) {
+
+    // Check the existence of the query parameters, If doesn't exists assign a default value
+    var page = req.query.page ? req.query.page : 1
+    var limit = req.query.limit ? req.query.limit : 100;
+    try {
+        var Materias = await ClaseService.getMateriasFiltros({}, page, limit)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Materias, message: "Succesfully Materias Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
+exports.getClasesProfesor = async function (req, res, next){
+    var Clase = {
+        id_profesor: req.body.id_profesor,
+    }
+
+    try{
+        var clasesProfesor = await ClaseService.getClasesProfesor(Clase);
+        if(!clasesProfesor){
+            return res.status(202).json({status: 202, message: "El profesor no tiene clases"})
+        }
+        return res.status(200).json({status: 200, data: clasesProfesor, message: "Clases del profesor encontadas"})
         
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})

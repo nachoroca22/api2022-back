@@ -11,6 +11,8 @@ var ClaseSchema = new mongoose.Schema({
     duracion: String,
     descripcion: String,
     id_profesor: Number,
+    calificacion: Number,
+    contrataciones: Number,
     estado: {
         type: Boolean,
         default: true
