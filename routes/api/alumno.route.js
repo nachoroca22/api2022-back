@@ -15,6 +15,8 @@ router.get('/test', function(req, res, next) {
 router.put('/home', AlumnosController.getAlumno)  
 router.post('/altaalumno', AlumnosController.createAlumno)
 router.post('/login/', AlumnosController.loginAlumno)
+router.post("/actualizaralumno",AlumnosController.updateAlumno)
+
 //router.put('/contrataciones', ContratacionesController.getContratacionesByAlumno)  
 
  

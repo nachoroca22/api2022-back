@@ -11,17 +11,7 @@ exports.createAlumno = async function (req, res, next) {
     var Alumno = {
         name: req.body.name,
         apellido: req.body.apellido,
-        fechaNac: req.body.fechaNac,
-        genero: req.body.genero,
         usuario: req.body.usuario,
-        password: req.body.password,
-        estado: req.body.estado,
-        rol: req.body.rol,
-        nivel_primaria: req.body.nivel_primaria,
-        nivel_secundaria: req.body.nivel_secundaria,
-        nivel_terciario: req.body.nivel_terciario,
-        nivel_universitario: req.body.nivel_universitario,
-
     }
     try {
         // Calling the Service function with the new object from the Request Body
@@ -31,6 +21,38 @@ exports.createAlumno = async function (req, res, next) {
         //Return an Error Response Message with Code and the Error Message.
         console.log(e)
         return res.status(400).json({status: 400, message: "Alumno Creation was Unsuccesfull"})
+    }
+}
+
+
+exports.updateAlumno = async function (req, res, next) {
+    
+    // Id is necessary for the update
+    if (!req.body.id_alumno) {
+        return res.status(400).json({status: 400., message: "id_alumno must be present"})
+    }
+    var id_alumno = req.body.id_alumno;
+    var Alumno = {
+        id_alumno,
+        fechaNac: req.body.fechaNac ? req.body.fechaNac : null,
+        genero: req.body.genero ? req.body.genero : null,
+        nivel_primaria: req.body.nivel_primaria ? req.body.nivel_primaria : null,
+        nivel_secundaria: req.body.nivel_secundaria ? req.body.nivel_secundaria: null,
+        nivel_terciario: req.body.nivel_terciario ? req.body.nivel_terciario: null,
+        nivel_universitario: req.body.nivel_universitario ? req.body.nivel_universitario: null,
+
+    }
+    try {
+        var updateAlumno = await AlumnoService.updateAlumno(Alumno)
+        if(!updateAlumno){
+            return res.status(200).json({status: 200, data: updateAlumno, message: "Alumno Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: updateAlumno, message: "Succesfully Updated Alumno"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
     }
 }
 

@@ -48,6 +48,36 @@ exports.createProfesor = async function (req, res, next) {
     }
 }
 
+exports.updateProfesor = async function (req, res, next) {
+    
+    // Id is necessary for the update
+    if (!req.body.id_user) {
+        return res.status(400).json({status: 400., message: "id_clase must be present"})
+    }
+    var id_user = req.body.id_user;
+    var Profesor = {
+        id_user,
+        fechaNac: req.body.fechaNac ? req.body.fechaNac : null,
+        genero: req.body.genero ? req.body.genero : null,
+        estudios: req.body.estudios ? req.body.estudios : null,
+        presentacion: req.body.presentacion ? req.body.presentacion: null,
+    }
+    try {
+        var updateProfesor = await ProfesorService.updateProfesor(Profesor)
+        if(!updateProfesor){
+            return res.status(200).json({status: 200, data: updateProfesor, message: "Profesor Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: updateProfesor, message: "Succesfully Updated Profesor"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+
+
+
 exports.loginProfesor = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("llegue a login",req.body)
