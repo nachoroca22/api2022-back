@@ -16,6 +16,8 @@ router.get('/', ProfesoresController.getProfesores)
 router.put('/home', ProfesoresController.getProfesor)  
 router.post('/altaprofesor', ProfesoresController.createProfesor)
 router.post('/login/', ProfesoresController.loginProfesor)
+router.post("/actualizarprofesor",ProfesoresController.updateProfesor)
+
 //router.put('/contrataciones', ContratacionesController.getContratacionesByProfesor)  
 
 

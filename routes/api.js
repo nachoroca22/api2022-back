@@ -10,4 +10,5 @@ router.use('/profesores', profesores);
 router.use('/alumnos', alumnos);
 router.use('/clases', clases);
 
+
 module.exports = router;

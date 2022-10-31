@@ -61,6 +61,34 @@ exports.createProfesor = async function (profesor) {
     }
 }
 
+exports.updateProfesor= async function (profesor) {
+
+    try {
+        //Find the old User Object by the Id
+        var oldProfesor = await Profesor.findOne({
+            id_user: profesor.id_user
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Profesor")
+    }
+    // If no old Alumno Object exists return false
+    if (!oldProfesor) {
+        return false;
+    }
+    //Edit the Alumno Object
+        oldProfesor.fechaNac = profesor.fechaNac
+        oldProfesor.genero = profesor.genero
+        oldProfesor.estudios = profesor.estudios
+        oldProfesor.presentacion = profesor.presentacion
+    
+    try {
+        var savedProfesor = await oldProfesor.save()
+        return savedProfesor;
+    } catch (e) {
+        throw Error("And Error occured while updating the Profesor");
+    }
+}
+
 exports.loginProfesor = async function (profesor) {
 
     // Creating a new Mongoose Object by using the new keyword

@@ -7,7 +7,7 @@ var AlumnoSchema = new mongoose.Schema({
     name: String,
     apellido: String,
     genero: String,
-    fechaNac: Date,
+    fechaNac: String,
     usuario: String,
     password: String,
     estado: Boolean,
