@@ -13,10 +13,11 @@ router.get('/test', function(req, res, next) {
 
 // nuevo
 router.get('/', ProfesoresController.getProfesores)
-router.put('/home', ProfesoresController.getProfesor)  
+router.put('/home',Authorization, ProfesoresController.getProfesor)  
 router.post('/altaprofesor', ProfesoresController.createProfesor)
 router.post('/login/', ProfesoresController.loginProfesor)
-router.post("/actualizarprofesor",ProfesoresController.updateProfesor)
+router.post("/actualizarprofesor",Authorization,ProfesoresController.updateProfesor)
+router.put('/resetpassword', ProfesoresController.resetPassword)  
 
 //router.put('/contrataciones', ContratacionesController.getContratacionesByProfesor)  
 

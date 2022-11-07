@@ -75,6 +75,30 @@ exports.updateClase = async function (req, res, next) {
     }
 }
 
+exports.disableClase = async function (req, res, next) {
+    
+    // Id is necessary for the update
+    if (!req.body.id_clase) {
+        return res.status(400).json({status: 400., message: "id_clase must be present"})
+    }
+    var id_clase = req.body.id_clase;
+    var Clase = {
+        id_clase,
+    }
+    try {
+        var updateClase = await ClaseService.disableClase(Clase)
+        if(!updateClase){
+            return res.status(200).json({status: 200, data: updateClase, message: "Clase Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: updateClase, message: "Clase succesfully disabled "})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+
 exports.getClase = async function (req, res, next){
     var Clase = {
         id_clase: req.body.id_clase,
@@ -94,12 +118,12 @@ exports.getClase = async function (req, res, next){
 }
 
 exports.getClasesFiltros = async function (req, res, next) {
-
     // Check the existence of the query parameters, If doesn't exists assign a default value
     var page = req.query.page ? req.query.page : 1
     var limit = req.query.limit ? req.query.limit : 10;
+    var filtros = req.body
     try {
-        var Clases = await ClaseService.getClasesFiltros({}, page, limit)
+        var Clases = await ClaseService.getClasesFiltros(filtros,page, limit)
         // Return the Users list with the appropriate HTTP password Code and Message.
         return res.status(200).json({status: 200, data: Clases, message: "Succesfully Clases Recieved"});
     } catch (e) {

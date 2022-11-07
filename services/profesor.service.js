@@ -3,6 +3,7 @@ var Profesor = require('../models/profesores.model');
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
 const { getMaxListeners } = require('../models/profesores.model');
+const mail = require("./mail.service")
 
 // Saving the context of this module inside the _the variable
 _this = this
@@ -30,36 +31,89 @@ exports.getProfesores = async function (query, page, limit) {
 
 exports.createProfesor = async function (profesor) {
     // Creating a new Mongoose Object by using the new keyword
-    var hashedPassword = bcrypt.hashSync(profesor.password, 8);
-    var newProfesor = new Profesor({
-        name: profesor.name,
-        apellido: profesor.apellido,
-        fechaNac: profesor.fechaNac,
-        rol: profesor.rol,
-        genero: profesor.genero,
-        usuario: profesor.usuario,
-        password: hashedPassword,
-        estudios: profesor.estudios,
-        presentacion: profesor.presentacion,
-        estado: profesor.estado,
-        fechaIngreso : profesor.fechaIngreso,
-    })
-
     try {
-        // Saving the Empleado 
-        var savedProfesor = await newProfesor.save();
-        var token = jwt.sign({
-            id: savedProfesor._id
-        }, process.env.SECRET, {
-            expiresIn: 86400 // expires in 24 hours
-        });
-        return token;
+        var searchProfesor = await Profesor.findOne({
+            usuario: profesor.usuario
+        })
+        if(!searchProfesor){
+            var password = Math.random().toString(36).slice(2, 12)
+            var hashedPassword = bcrypt.hashSync(password, 8);
+            var newProfesor = new Profesor({
+                name: profesor.name,
+                apellido: profesor.apellido,
+                fechaNac: "DD/MM/AAAA",
+                rol: "Profesor",
+                estado: true,
+                genero: "30",
+                usuario: profesor.usuario,
+                password: hashedPassword,
+                estudios: "",
+                presentacion: "",
+             }) 
+             try {
+                // Saving the Empleado 
+                var savedProfesor = await newProfesor.save();
+                var token = jwt.sign({
+                    id: savedProfesor._id
+                }, process.env.SECRET, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                var mailOptions = {
+                    from: 'tu-profe-uade@outook.com',
+                    to: profesor.usuario,
+                    subject: 'TuProfe - Registo de Profesor',
+                    text: 'Bienvenido ' + profesor.name + " ya podes acceder a nuestro portal y publicar tus clases!!! \nUser: " + profesor.usuario + "\nPassword: " + password
+                };
+                mail.sendEmail(mailOptions);
+                return token;
+            } catch (e) {
+                // return a Error message describing the reason 
+                console.log(e)    
+                throw Error("Error while Creating Profesor")
+            }
+
+        } /* else{
+            return ("El correo ya se encuentra registrado.")
+        }  */         
     } catch (e) {
-        // return a Error message describing the reason 
-        console.log(e)    
-        throw Error("Error while Creating Profesor")
+            throw Error("Error occured while Finding the Profesor")
+    } 
+
+}
+
+
+exports.resetPassword = async function (profesor) {
+    // Creating a new Mongoose Object by using the new keyword
+    try {
+        var searchProfesor = await Profesor.findOne({
+            usuario: profesor.usuario
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Profesor")
+    }
+    if(searchProfesor){
+        var password = Math.random().toString(36).slice(2, 12)
+        var hashedPassword = bcrypt.hashSync(password, 8)
+        searchProfesor.password = hashedPassword
+            
+        try {
+            var savedProfesor = await searchProfesor.save()
+            var mailOptions = {
+                from: 'tu-profe-uade@outook.com',
+                to: profesor.usuario,
+                subject: 'TuProfe - Reset de password de Profesor',
+                text: 'Hola ' + searchProfesor.name + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password
+            };
+             mail.sendEmail(mailOptions);
+            return savedProfesor;
+        } catch (e) {
+            throw Error("And Error occured while updating the Profesor");
+        }
+    }else{
+        return false
     }
 }
+
 
 exports.updateProfesor= async function (profesor) {
 
@@ -71,11 +125,11 @@ exports.updateProfesor= async function (profesor) {
     } catch (e) {
         throw Error("Error occured while Finding the Profesor")
     }
-    // If no old Alumno Object exists return false
+    // If no old profesor Object exists return false
     if (!oldProfesor) {
         return false;
     }
-    //Edit the Alumno Object
+    //Edit the profesor Object
         oldProfesor.fechaNac = profesor.fechaNac
         oldProfesor.genero = profesor.genero
         oldProfesor.estudios = profesor.estudios
@@ -94,7 +148,6 @@ exports.loginProfesor = async function (profesor) {
     // Creating a new Mongoose Object by using the new keyword
     
     try {
-        console.log("hola",profesor)
         // Find the Empleado 
         var _details = await Profesor.findOne({
             usuario: profesor.usuario
@@ -118,7 +171,6 @@ exports.loginProfesor = async function (profesor) {
 
 exports.getProfesor = async  function (profesor){
     try {
-        console.log("hola",profesor)
         var searchProfesor = await Profesor.findOne({
             id_user: profesor.id_user
         })
@@ -130,7 +182,7 @@ exports.getProfesor = async  function (profesor){
         
     } catch (e) {
             throw Error("Error occured while Finding the Profesor")
-        }  
+    }  
 }
 
 exports.getContratacionesByProfesor = async  function (contratacion){

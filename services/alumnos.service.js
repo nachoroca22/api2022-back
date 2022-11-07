@@ -11,49 +11,82 @@ _this = this
 
 exports.createAlumno = async function (alumno) {
     // Creating a new Mongoose Object by using the new keyword
-
-    var password = Math.random().toString(36).slice(2, 12)
-
-    var hashedPassword = bcrypt.hashSync(password, 8);
-
-    var newAlumno = new Alumno({
-        name: alumno.name,
-        apellido: alumno.apellido,
-        fechaNac: "DD/MM/AAAA",
-        rol: "Alumno",
-        estado: true,
-        genero: "30",
-        usuario: alumno.usuario,
-        password: hashedPassword,
-        nivel_primaria: "30",
-        nivel_secundaria: "30",
-        nivel_terciario: "30",
-        nivel_universitario : "30",
-    })
-
     try {
-        // Saving the Empleado 
-        var savedAlumno = await newAlumno.save();
-        var token = jwt.sign({
-            id: savedAlumno._id
-        }, process.env.SECRET, {
-            expiresIn: 86400 // expires in 24 hours
-        });
-
-        var mailOptions = {
-            from: 'tu-profe-uade@outook.com',
-            to: alumno.usuario,
-            subject: 'TuProfe - Registo de Alumno',
-            text: 'Bienvenido ' + alumno.name + " ya podes acceder a nuestro portal y contratar a los mejores profesores!!!! \nUser: " + alumno.usuario + "\nPassword: " + password
-        };
-        mail.sendEmail(mailOptions);
-
-
-        return token;
+        var searchAlumno = await Alumno.findOne({
+            usuario: alumno.usuario
+        })
+        if(!searchAlumno){
+            var password = Math.random().toString(36).slice(2, 12)
+            var hashedPassword = bcrypt.hashSync(password, 8);
+            var newAlumno = new Alumno({
+                name: alumno.name,
+                apellido: alumno.apellido,
+                fechaNac: "DD/MM/AAAA",
+                rol: "Alumno",
+                estado: true,
+                genero: "30",
+                usuario: alumno.usuario,
+                password: hashedPassword,
+                nivel_primaria: "30",
+                nivel_secundaria: "30",
+                nivel_terciario: "30",
+                nivel_universitario : "30",
+            })
+            try{
+                var savedAlumno = await newAlumno.save();
+                var token = jwt.sign({
+                    id: savedAlumno._id
+                }, process.env.SECRET, {
+                    expiresIn: 86400 // expires in 24 hours
+                });
+                var mailOptions = {
+                    from: 'tu-profe-uade@outook.com',
+                    to: alumno.usuario,
+                    subject: 'TuProfe - Registo de Alumno',
+                    text: 'Bienvenido ' + alumno.name + " ya podes acceder a nuestro portal y contratar a los mejores profesores!!!! \nUser: " + alumno.usuario + "\nPassword: " + password
+                };
+                mail.sendEmail(mailOptions);
+                return token;
+            }catch (e) {
+                // return a Error message describing the reason 
+                console.log(e)    
+                throw Error("Error while Creating Alumno")
+            }
+        }
     } catch (e) {
-        // return a Error message describing the reason 
-        console.log(e)    
-        throw Error("Error while Creating Alumno")
+        throw Error("Error occured while Finding the Profesor")
+    }
+} 
+
+exports.resetPassword = async function (alumno) {
+    // Creating a new Mongoose Object by using the new keyword
+    try {
+        var searchAlumno = await Alumno.findOne({
+            usuario: alumno.usuario
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Alumno")
+    }
+    if(searchAlumno){
+        var password = Math.random().toString(36).slice(2, 12)
+        var hashedPassword = bcrypt.hashSync(password, 8)
+        searchAlumno.password = hashedPassword
+            
+        try {
+            var savedAlumno = await searchAlumno.save()
+            var mailOptions = {
+                from: 'tu-profe-uade@outook.com',
+                to: alumno.usuario,
+                subject: 'TuProfe - Reset de password de Alumno',
+                text: 'Hola ' + searchAlumno.name + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password
+            };
+             mail.sendEmail(mailOptions);
+            return savedAlumno;
+        } catch (e) {
+            throw Error("And Error occured while updating the Alumno");
+        }
+    }else{
+        return false
     }
 }
 
@@ -93,7 +126,6 @@ exports.loginAlumno = async function (alumno) {
     // Creating a new Mongoose Object by using the new keyword
     
     try {
-        console.log("hola",alumno)
         // Find the alumno 
         var _details = await Alumno.findOne({
             usuario: alumno.usuario
@@ -117,7 +149,6 @@ exports.loginAlumno = async function (alumno) {
 
 exports.getAlumno= async  function (alumno){
     try {
-        console.log("hola",alumno)
         var searchAlumno = await Alumno.findOne({
             id_alumno: alumno.id_alumno
         })

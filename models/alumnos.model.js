@@ -8,7 +8,10 @@ var AlumnoSchema = new mongoose.Schema({
     apellido: String,
     genero: String,
     fechaNac: String,
-    usuario: String,
+    usuario: {
+        type: String,
+        unique: true,
+    },
     password: String,
     estado: Boolean,
     rol: String,

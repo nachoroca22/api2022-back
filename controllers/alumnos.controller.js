@@ -16,7 +16,7 @@ exports.createAlumno = async function (req, res, next) {
     try {
         // Calling the Service function with the new object from the Request Body
         var createdAlumno = await AlumnoService.createAlumno(Alumno)
-        return res.status(201).json({token: createdAlumno, message: "Succesfully Created Allumno"})
+        return res.status(201).json({token: createdAlumno, message: "Succesfully Created Alumno"})
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
         console.log(e)
@@ -24,6 +24,28 @@ exports.createAlumno = async function (req, res, next) {
     }
 }
 
+exports.resetPassword = async function (req, res, next) {
+    if (!req.body.usuario) {
+        return res.status(400).json({status: 400., message: "usuario must be present"})
+    }
+    var usuario = req.body.usuario;
+    var Alumno = {
+        usuario
+    }
+
+    try {
+        var resetePassword = await AlumnoService.resetPassword(Alumno)
+        if(!resetePassword){
+            return res.status(200).json({status: 200, data: resetePassword, message: "Alumno Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: resetePassword, message: "Reset Password Alumno"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
 
 exports.updateAlumno = async function (req, res, next) {
     

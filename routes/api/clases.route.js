@@ -13,12 +13,12 @@ router.get('/test', function(req, res, next) {
 // nuevo
 router.put('/', ClasesController.getClase)
 router.get('/busqueda', ClasesController.getClases)
-router.post('/altaclase', ClasesController.createClase)
+router.post('/altaclase',Authorization, ClasesController.createClase)
 router.put('/clasesfiltradas', ClasesController.getClasesFiltros)
 router.get('/materias',ClasesController.getMateriasFiltros)
-router.put("/clasesprofesor",ClasesController.getClasesProfesor)
-router.put("/actualizarclase",ClasesController.updateClase)
-
+router.put("/clasesprofesor",Authorization,ClasesController.getClasesProfesor)
+router.put("/actualizarclase",Authorization,ClasesController.updateClase)
+router.put("/disableclase",Authorization,ClasesController.disableClase)
 
 // Export the Router
 module.exports = router;

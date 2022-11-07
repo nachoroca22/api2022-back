@@ -12,10 +12,12 @@ router.get('/test', function(req, res, next) {
   });
 
 // nuevo
-router.put('/home', AlumnosController.getAlumno)  
+router.put('/home',Authorization, AlumnosController.getAlumno)  
 router.post('/altaalumno', AlumnosController.createAlumno)
 router.post('/login/', AlumnosController.loginAlumno)
-router.post("/actualizaralumno",AlumnosController.updateAlumno)
+router.post("/actualizaralumno",Authorization,AlumnosController.updateAlumno)
+router.put('/resetpassword', AlumnosController.resetPassword)  
+
 
 //router.put('/contrataciones', ContratacionesController.getContratacionesByAlumno)  
 
