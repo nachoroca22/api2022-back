@@ -26,27 +26,50 @@ exports.createProfesor = async function (req, res, next) {
         //legajo: req.body.legajo,
         name: req.body.name,
         apellido: req.body.apellido,
-        fechaNac: req.body.fechaNac,
-        rol: req.body.rol,
-        genero: req.body.genero,
         usuario: req.body.usuario,
-        password: req.body.password,
-        estudios: req.body.estudios,
-        presentacion: req.body.presentacion,
-        estado: req.body.estado,
-        fechaIngreso: req.body.fechaIngreso,
-
     }
     try {
         // Calling the Service function with the new object from the Request Body
         var createdProfesor = await ProfesorService.createProfesor(Profesor)
-        return res.status(201).json({token: createdProfesor, message: "Succesfully Created Profesor"})
+        console.log("holaa",createdProfesor)
+        if (createdProfesor !== undefined){
+            return res.status(201).json({token: createdProfesor, message: "Succesfully Created Profesor"})
+        }else{
+            return res.status(204).json({token,message: "El correo ya se encuentra registrado."})
+        }
+        
+        
     } catch (e) {
         //Return an Error Response Message with Code and the Error Message.
         console.log(e)
         return res.status(400).json({status: 400, message: "Profesor Creation was Unsuccesfull"})
     }
 }
+
+exports.resetPassword = async function (req, res, next) {
+    if (!req.body.usuario) {
+        return res.status(400).json({status: 400., message: "usuario must be present"})
+    }
+    var usuario = req.body.usuario;
+    var Profesor = {
+        usuario
+    }
+
+    try {
+        var resetePassword = await ProfesorService.resetPassword(Profesor)
+        if(!resetePassword){
+            return res.status(200).json({status: 200, data: resetePassword, message: "Profesor Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: resetePassword, message: "Reset Password Profesor"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+
+
 
 exports.updateProfesor = async function (req, res, next) {
     
@@ -75,8 +98,6 @@ exports.updateProfesor = async function (req, res, next) {
         return res.status(400).json({status: 400., message: e.message})
     }
 }
-
-
 
 exports.loginProfesor = async function (req, res, next) {
     // Req.Body contains the form submit values.

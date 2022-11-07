@@ -82,6 +82,31 @@ exports.updateClase = async function (clase) {
     }
 }
 
+exports.disableClase = async function (clase) {
+
+    try {
+        //Find the old User Object by the Id
+        var oldClase = await Clase.findOne({
+            id_clase: clase.id_clase
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Clase")
+    }
+    // If no old Alumno Object exists return false
+    if (!oldClase) {
+        return false;
+    }
+    //Edit the Alumno Object
+        oldClase.estado = false
+
+    try {
+        var savedClase = await oldClase.save()
+        return savedClase;
+    } catch (e) {
+        throw Error("And Error occured while diable the Clase");
+    }
+}
+
 exports.getClase = async  function (clase){
     try {
         var searchClase = await Clase.findOne({
@@ -100,10 +125,12 @@ exports.getClase = async  function (clase){
 
 exports.getClasesFiltros = async function (query, page, limit) {
     // Options setup for the mongoose paginate
+    console.log(query.materia)
     var options = {
         page,
         limit
     }
+    
     try {
         var ClasesFiltros = await Clase.aggregate([
             {$lookup: {
@@ -114,7 +141,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             }},
             // solo clases activas
             {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
-            //{$match:{estado:true}},
+            {$match:{estado:true}},
             {$project:{
                 materia:1,
                 tipoClase:1,
@@ -132,7 +159,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
             {$skip: 0 },
-            {$limit: 10 } 
+            {$limit: 15 } 
         ])
         return ClasesFiltros;
 
@@ -148,9 +175,9 @@ exports.getMateriasFiltros = async function (query, page, limit) {
         limit
     }
     try {
-        var ClasesFiltros = await Clase.find().distinct('materia').sort()
-        ClasesFiltros.push("Todas")
-        return ClasesFiltros;
+        var MateriasFiltros = await Clase.find({estado: true}).distinct('materia').sort()
+        MateriasFiltros.push("Todas")
+        return MateriasFiltros;
 
     }catch (e) {
         throw Error("Error trayendo las clases");
