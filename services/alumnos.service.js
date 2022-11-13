@@ -13,19 +13,20 @@ exports.createAlumno = async function (alumno) {
     // Creating a new Mongoose Object by using the new keyword
     try {
         var searchAlumno = await Alumno.findOne({
-            usuario: alumno.usuario
+            usuario_alumno: alumno.usuario_alumno
         })
         if(!searchAlumno){
             var password = Math.random().toString(36).slice(2, 12)
             var hashedPassword = bcrypt.hashSync(password, 8);
             var newAlumno = new Alumno({
-                name: alumno.name,
-                apellido: alumno.apellido,
-                fechaNac: "DD/MM/AAAA",
+                name_alumno: alumno.name_alumno,
+                apellido_alumno: alumno.apellido_alumno,
+                fechaNac_alumno: "DD/MM/AAAA",
+                telefono_alumno: null,
                 rol: "Alumno",
-                estado: true,
-                genero: "30",
-                usuario: alumno.usuario,
+                estado_alumno: true,
+                genero_alumno: "30",
+                usuario_alumno: alumno.usuario_alumno,
                 password: hashedPassword,
                 nivel_primaria: "30",
                 nivel_secundaria: "30",
@@ -41,9 +42,9 @@ exports.createAlumno = async function (alumno) {
                 });
                 var mailOptions = {
                     from: 'tu-profe-uade@outook.com',
-                    to: alumno.usuario,
+                    to: alumno.usuario_alumno,
                     subject: 'TuProfe - Registo de Alumno',
-                    text: 'Bienvenido ' + alumno.name + " ya podes acceder a nuestro portal y contratar a los mejores profesores!!!! \nUser: " + alumno.usuario + "\nPassword: " + password
+                    text: 'Bienvenido ' + alumno.name_alumno + " ya podes acceder a nuestro portal y contratar a los mejores profesores!!!! \nUser: " + alumno.usuario_alumno + "\nPassword: " + password
                 };
                 mail.sendEmail(mailOptions);
                 return token;
@@ -62,7 +63,7 @@ exports.resetPassword = async function (alumno) {
     // Creating a new Mongoose Object by using the new keyword
     try {
         var searchAlumno = await Alumno.findOne({
-            usuario: alumno.usuario
+            usuario_alumno: alumno.usuario_alumno
         })
     } catch (e) {
         throw Error("Error occured while Finding the Alumno")
@@ -76,9 +77,9 @@ exports.resetPassword = async function (alumno) {
             var savedAlumno = await searchAlumno.save()
             var mailOptions = {
                 from: 'tu-profe-uade@outook.com',
-                to: alumno.usuario,
+                to: alumno.usuario_alumno,
                 subject: 'TuProfe - Reset de password de Alumno',
-                text: 'Hola ' + searchAlumno.name + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password
+                text: 'Hola ' + searchAlumno.name_alumno + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password
             };
              mail.sendEmail(mailOptions);
             return savedAlumno;
@@ -105,8 +106,9 @@ exports.updateAlumno= async function (alumno) {
         return false;
     }
     //Edit the Alumno Object
-        oldAlumno.fechaNac = alumno.fechaNac
-        oldAlumno.genero = alumno.genero
+        oldAlumno.fechaNac_alumno = alumno.fechaNac_alumno
+        oldAlumno.genero_alumno = alumno.genero_alumno
+        oldAlumno.telefono_alumno = alumno.telefono_alumno
         oldAlumno.nivel_primaria = alumno.nivel_primaria
         oldAlumno.nivel_secundaria = alumno.nivel_secundaria
         oldAlumno.nivel_terciario = alumno.nivel_terciario
@@ -128,7 +130,7 @@ exports.loginAlumno = async function (alumno) {
     try {
         // Find the alumno 
         var _details = await Alumno.findOne({
-            usuario: alumno.usuario
+            usuario_alumno: alumno.usuario_alumno
         });
         var passwordIsValid = bcrypt.compareSync(alumno.password, _details.password);
         if (!passwordIsValid) throw Error("Invalid username/password")

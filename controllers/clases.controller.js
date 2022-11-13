@@ -132,6 +132,21 @@ exports.getClasesFiltros = async function (req, res, next) {
     }
 }
 
+exports.getClaseFull = async function (req, res, next) {
+    // Check the existence of the query parameters, If doesn't exists assign a default value
+    var page = req.query.page ? req.query.page : 1
+    var limit = req.query.limit ? req.query.limit : 10;
+    var filtros = req.body
+    try {
+        var Clases = await ClaseService.getClaseFull(filtros,page, limit)
+        // Return the Users list with the appropriate HTTP password Code and Message.
+        return res.status(200).json({status: 200, data: Clases, message: "Succesfully Clase Recieved"});
+    } catch (e) {
+        //Return an Error Response Message with Code and the Error Message.
+        return res.status(400).json({status: 400, message: e.message});
+    }
+}
+
 exports.getMateriasFiltros = async function (req, res, next) {
 
     // Check the existence of the query parameters, If doesn't exists assign a default value
@@ -162,5 +177,4 @@ exports.getClasesProfesor = async function (req, res, next){
     } catch (e) {
         return res.status(400).json({status: 400, message: e.message})
     }
-
 }

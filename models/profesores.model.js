@@ -9,6 +9,7 @@ var ProfesorSchema = new mongoose.Schema({
     fechaNac: String,
     genero: String,
     usuario: String,
+    telefono: Number,
     password: String,
     estudios: String,
     rol: String,

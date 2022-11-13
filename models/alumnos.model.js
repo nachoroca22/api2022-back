@@ -4,16 +4,17 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var AlumnoSchema = new mongoose.Schema({
     id_alumno: Number,
-    name: String,
-    apellido: String,
-    genero: String,
-    fechaNac: String,
-    usuario: {
+    name_alumno: String,
+    apellido_alumno: String,
+    genero_alumno: String,
+    telefono_alumno : Number,
+    fechaNac_alumno: String,
+    usuario_alumno: {
         type: String,
         unique: true,
     },
     password: String,
-    estado: Boolean,
+    estado_alumno: Boolean,
     rol: String,
     nivel_primaria: String,
     nivel_secundaria: String,

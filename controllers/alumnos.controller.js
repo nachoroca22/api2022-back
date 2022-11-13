@@ -9,9 +9,9 @@ exports.createAlumno = async function (req, res, next) {
     // Req.Body contains the form submit values.
     //console.log("llegue al controller",req.body)
     var Alumno = {
-        name: req.body.name,
-        apellido: req.body.apellido,
-        usuario: req.body.usuario,
+        name_alumno: req.body.name_alumno,
+        apellido_alumno: req.body.apellido_alumno,
+        usuario_alumno: req.body.usuario_alumno,
     }
     try {
         // Calling the Service function with the new object from the Request Body
@@ -25,12 +25,13 @@ exports.createAlumno = async function (req, res, next) {
 }
 
 exports.resetPassword = async function (req, res, next) {
-    if (!req.body.usuario) {
+    console.log(req.body)
+    if (!req.body.usuario_alumno) {
         return res.status(400).json({status: 400., message: "usuario must be present"})
     }
-    var usuario = req.body.usuario;
+    var usuario_alumno = req.body.usuario_alumno;
     var Alumno = {
-        usuario
+        usuario_alumno
     }
 
     try {
@@ -56,8 +57,9 @@ exports.updateAlumno = async function (req, res, next) {
     var id_alumno = req.body.id_alumno;
     var Alumno = {
         id_alumno,
-        fechaNac: req.body.fechaNac ? req.body.fechaNac : null,
-        genero: req.body.genero ? req.body.genero : null,
+        fechaNac_alumno: req.body.fechaNac_alumno ? req.body.fechaNac_alumno : null,
+        telefono_alumno: req.body.telefono_alumno ? req.body.telefono_alumno : null,
+        genero_alumno: req.body.genero_alumno ? req.body.genero_alumno : null,
         nivel_primaria: req.body.nivel_primaria ? req.body.nivel_primaria : null,
         nivel_secundaria: req.body.nivel_secundaria ? req.body.nivel_secundaria: null,
         nivel_terciario: req.body.nivel_terciario ? req.body.nivel_terciario: null,
@@ -82,7 +84,7 @@ exports.loginAlumno = async function (req, res, next) {
     // Req.Body contains the form submit values.
     console.log("llegue a login",req.body)
     var Alumno = {
-        usuario: req.body.usuario,
+        usuario_alumno: req.body.usuario_alumno,
         password: req.body.password
     }
     try {
