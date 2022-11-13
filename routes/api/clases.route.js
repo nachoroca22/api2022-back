@@ -19,6 +19,9 @@ router.get('/materias',ClasesController.getMateriasFiltros)
 router.put("/clasesprofesor",Authorization,ClasesController.getClasesProfesor)
 router.put("/actualizarclase",Authorization,ClasesController.updateClase)
 router.put("/disableclase",Authorization,ClasesController.disableClase)
+router.put('/clasefull', ClasesController.getClaseFull)
+
+
 
 // Export the Router
 module.exports = router;

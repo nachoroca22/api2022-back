@@ -31,7 +31,6 @@ exports.createProfesor = async function (req, res, next) {
     try {
         // Calling the Service function with the new object from the Request Body
         var createdProfesor = await ProfesorService.createProfesor(Profesor)
-        console.log("holaa",createdProfesor)
         if (createdProfesor !== undefined){
             return res.status(201).json({token: createdProfesor, message: "Succesfully Created Profesor"})
         }else{
@@ -82,6 +81,7 @@ exports.updateProfesor = async function (req, res, next) {
         id_user,
         fechaNac: req.body.fechaNac ? req.body.fechaNac : null,
         genero: req.body.genero ? req.body.genero : null,
+        telefono: req.body.telefono ? req.body.telefono : null,
         estudios: req.body.estudios ? req.body.estudios : null,
         presentacion: req.body.presentacion ? req.body.presentacion: null,
     }

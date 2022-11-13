@@ -46,6 +46,7 @@ exports.createProfesor = async function (profesor) {
                 estado: true,
                 genero: "30",
                 usuario: profesor.usuario,
+                telefono: profesor.telefono,
                 password: hashedPassword,
                 estudios: "",
                 presentacion: "",
@@ -81,7 +82,6 @@ exports.createProfesor = async function (profesor) {
 
 }
 
-
 exports.resetPassword = async function (profesor) {
     // Creating a new Mongoose Object by using the new keyword
     try {
@@ -114,7 +114,6 @@ exports.resetPassword = async function (profesor) {
     }
 }
 
-
 exports.updateProfesor= async function (profesor) {
 
     try {
@@ -133,6 +132,7 @@ exports.updateProfesor= async function (profesor) {
         oldProfesor.fechaNac = profesor.fechaNac
         oldProfesor.genero = profesor.genero
         oldProfesor.estudios = profesor.estudios
+        oldProfesor.telefono = profesor.telefono
         oldProfesor.presentacion = profesor.presentacion
     
     try {

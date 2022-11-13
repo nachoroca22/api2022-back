@@ -125,7 +125,6 @@ exports.getClase = async  function (clase){
 
 exports.getClasesFiltros = async function (query, page, limit) {
     // Options setup for the mongoose paginate
-    console.log(query.materia)
     var options = {
         page,
         limit
@@ -141,7 +140,8 @@ exports.getClasesFiltros = async function (query, page, limit) {
             }},
             // solo clases activas
             {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
-            {$match:{estado:true}},
+            {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:query.calificacion}},
+            
             {$project:{
                 materia:1,
                 tipoClase:1,
@@ -159,7 +159,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
             {$skip: 0 },
-            {$limit: 15 } 
+            {$limit: 30 } 
         ])
         return ClasesFiltros;
 
@@ -167,6 +167,60 @@ exports.getClasesFiltros = async function (query, page, limit) {
         throw Error("Error trayendo las clases");
   }
 }
+
+exports.getClaseFull = async function (query, page, limit) {
+    // Options setup for the mongoose paginate
+    let id_clase = parseInt(query.id_clase)
+    var options = {
+        page,
+        limit
+    }
+    
+    try {
+        var ClasesFiltros = await Clase.aggregate([
+            {$lookup: {
+                from: 'profesors',
+                localField: 'id_profesor',
+                foreignField: 'id_user',
+                as: 'clases',
+            }},
+            // solo clases activas
+            {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
+            {$match:{estado:true, id_clase:id_clase}},
+            
+            {$project:{
+                materia:1,
+                tipoClase:1,
+                costo:1,
+                presentacion:1,
+                frecuencia:1,
+                calificacion:1,
+                duracion:1,
+                descripcion:1,
+                id_clase:1,
+                id_user:1,
+                name: 1,
+                apellido: 1,
+                usuario:1,
+                estudios: 1,
+                }
+            },
+            // para paginar en mongo
+            {$setWindowFields: {output: {totalCount: {$count: {}}}}},
+            {$skip: 0 },
+            {$limit: 10 } 
+        ])
+        
+        let ClaseFiltros = ClasesFiltros[0]
+        return ClaseFiltros;
+
+    }catch (e) {
+        throw Error("Error trayendo las clases");
+  }
+}
+
+
+
 
 exports.getMateriasFiltros = async function (query, page, limit) {
     // Options setup for the mongoose paginate
@@ -176,7 +230,6 @@ exports.getMateriasFiltros = async function (query, page, limit) {
     }
     try {
         var MateriasFiltros = await Clase.find({estado: true}).distinct('materia').sort()
-        MateriasFiltros.push("Todas")
         return MateriasFiltros;
 
     }catch (e) {
