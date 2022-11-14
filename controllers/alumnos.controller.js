@@ -48,6 +48,29 @@ exports.resetPassword = async function (req, res, next) {
     }
 }
 
+exports.setPassword = async function (req, res, next) {
+
+    if (!req.body.id_alumno) {
+        return res.status(400).json({status: 400., message: "usuario must be present"})
+    }
+    var Alumno = {
+        id_alumno: req.body.id_alumno,
+        password: req.body.password
+    }
+    try {
+        var changePassword = await AlumnoService.setPassword(Alumno)
+        if(!changePassword){
+            return res.status(200).json({status: 200, data: changePassword, message: "Alumno Inexistente"})
+        }
+        else{
+            return res.status(200).json({status: 200, data: changePassword, message: "Reset Password Alumno"})
+        }   
+        
+    } catch (e) {
+        return res.status(400).json({status: 400., message: e.message})
+    }
+}
+
 exports.updateAlumno = async function (req, res, next) {
     
     // Id is necessary for the update

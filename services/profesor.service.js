@@ -114,6 +114,31 @@ exports.resetPassword = async function (profesor) {
     }
 }
 
+exports.setPassword = async function (profesor) {
+    // Creating a new Mongoose Object by using the new keyword
+    try {
+        var searchProfesor = await Profesor.findOne({
+            id_user: profesor.id_user
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Profesor")
+    }
+    if(searchProfesor){
+        var password = profesor.password
+        var hashedPassword = bcrypt.hashSync(password, 8)
+        searchProfesor.password = hashedPassword
+            
+        try {
+            var savedProfesor = await searchProfesor.save()
+            return savedProfesor;
+        } catch (e) {
+            throw Error("And Error occured while updating the Profesor");
+        }
+    }else{
+        return false
+    }
+}
+
 exports.updateProfesor= async function (profesor) {
 
     try {
