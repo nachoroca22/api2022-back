@@ -45,7 +45,6 @@ exports.createClase = async function (req, res, next) {
     }
 }
 
-
 exports.updateClase = async function (req, res, next) {
     
     // Id is necessary for the update

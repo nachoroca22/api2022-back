@@ -17,6 +17,7 @@ router.post('/altaalumno', AlumnosController.createAlumno)
 router.post('/login/', AlumnosController.loginAlumno)
 router.post("/actualizaralumno",Authorization,AlumnosController.updateAlumno)
 router.put('/resetpassword', AlumnosController.resetPassword)  
+router.put('/setpassword', AlumnosController.setPassword)  
 
 
 //router.put('/contrataciones', ContratacionesController.getContratacionesByAlumno)  

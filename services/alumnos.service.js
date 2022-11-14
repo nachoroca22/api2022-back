@@ -91,6 +91,32 @@ exports.resetPassword = async function (alumno) {
     }
 }
 
+exports.setPassword = async function (alumno) {
+    console.log(alumno)
+    // Creating a new Mongoose Object by using the new keyword
+    try {
+        var searchAlumno = await Alumno.findOne({
+            id_alumno: alumno.id_alumno
+        })
+    } catch (e) {
+        throw Error("Error occured while Finding the Alumno")
+    }
+    if(searchAlumno){
+        var password = alumno.password
+        var hashedPassword = bcrypt.hashSync(password, 8)
+        searchAlumno.password = hashedPassword
+            
+        try {
+            var savedAlumno = await searchAlumno.save()
+            return savedAlumno;
+        } catch (e) {
+            throw Error("And Error occured while updating the Alumno");
+        }
+    }else{
+        return false
+    }
+}
+
 exports.updateAlumno= async function (alumno) {
 
     try {
