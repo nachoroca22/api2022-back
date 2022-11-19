@@ -236,6 +236,7 @@ exports.obtenerCometariosPendientes = async function (req, res, next){
 exports.obtenerCometariosClase = async function (req, res, next){
     var Contratacion = {
         id_clase: req.body.id_clase,
+        paginado: req.body.paginado ? req.body.paginado : 0
     }
 
     try{

@@ -1,9 +1,11 @@
 // Gettign the Newly created Mongoose Model we just created 
 var Contratacion = require('../models/contrataciones.model');
+var Clase = require('../models/clases.model');
+
 const mail = require("./mail.service")
 
 // Saving the context of this module inside the _the variable
-_this = this
+_this = this 
 
 // Async function to get the Empleados List
 
@@ -260,7 +262,16 @@ exports.aprobarComentario = async function (contratacion) {
             searchContratacion.estado_comentario = "Aprobado"
             try {
                 var savedContratacion = await searchContratacion.save()
+                var searchClase = await Clase.findOne({
+                    id_clase: searchContratacion.id_clase
+                })
+                searchClase.calificaciones = searchClase.calificaciones + searchContratacion.calificacion_alumno
+                searchClase.contrataciones = searchClase.contrataciones + 1
+                searchClase.calificacion= ~~(searchClase.calificaciones/searchClase.contrataciones)
+
+                var savedClase = await searchClase.save()
                 return savedContratacion;
+
             } catch (e) {
                 throw Error("And Error occured while updating the Contratacion");
             }
@@ -361,31 +372,22 @@ exports.obtenerCometariosPendientes = async  function (profesor){
 exports.obtenerCometariosClase = async function (contratacion) {
     // Options setup for the mongoose paginate
     let id_clase = parseInt(contratacion.id_clase)
+    let paginado = contratacion.paginado
     try {
         var comentariosClase = await Contratacion.aggregate([
-            {$match:{id_clase: id_clase}},
+            {$match:{id_clase: id_clase, estado_comentario: "Aprobado"}},
 
             
-            /* {$project:{
-                materia:1,
-                tipoClase:1,
-                costo:1,
-                presentacion:1,
-                frecuencia:1,
-                calificacion:1,
-                duracion:1,
-                descripcion:1,
+            {$project:{
                 id_clase:1,
-                id_user:1,
-                name: 1,
-                apellido: 1,
-                usuario:1,
-                estudios: 1,
+                alumno:1,
+                comentario:1,
+                calificacion_alumno:1,
                 }
-            }, */
+            },
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
-            {$skip: 0 },
+            {$skip: paginado },
             {$limit: 10 } 
         ])
         

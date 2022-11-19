@@ -12,6 +12,7 @@ var ClaseSchema = new mongoose.Schema({
     descripcion: String,
     id_profesor: Number,
     calificacion: Number,
+    calificaciones: Number,
     contrataciones: Number,
     estado: {
         type: Boolean,
