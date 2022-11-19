@@ -6,10 +6,9 @@ exports.sendEmail = function(req){
     var transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            //user: 'tu-profe-uade@outlook.com',
-            user: 'tu.profe.uade@gmail.com',
-            pass: 'npmpkhkleobabobq'
-            //pass: 'Uade1234!okas-pepe'
+            user: process.env.USER_MAIL,
+            pass: process.env.PASS_MAIL
+
         }
     });
 // Definimos el email

@@ -37,11 +37,11 @@ exports.createAlumno = async function (alumno) {
                 var savedAlumno = await newAlumno.save();
                 var token = jwt.sign({
                     id: savedAlumno._id
-                }, process.env.SECRET, {
+                },process.env.SECRET , {
                     expiresIn: 86400 // expires in 24 hours
                 });
                 var mailOptions = {
-                    from: 'tu-profe-uade@outook.com',
+                    from: 'tu.profe.uade@gmail.com',
                     to: alumno.usuario_alumno,
                     subject: 'TuProfe - Registo de Alumno',
                     text: 'Bienvenido ' + alumno.name_alumno + " ya podes acceder a nuestro portal y contratar a los mejores profesores!!!! \nUser: " + alumno.usuario_alumno + "\nPassword: " + password
@@ -76,7 +76,7 @@ exports.resetPassword = async function (alumno) {
         try {
             var savedAlumno = await searchAlumno.save()
             var mailOptions = {
-                from: 'tu-profe-uade@outook.com',
+                from: 'tu.profe.uade@gmail.com',
                 to: alumno.usuario_alumno,
                 subject: 'TuProfe - Reset de password de Alumno',
                 text: 'Hola ' + searchAlumno.name_alumno + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password

@@ -32,6 +32,7 @@ exports.createClase = async function (req, res, next) {
         id_profesor: req.body.id_profesor,
         calificacion: 0,
         contrataciones: 0,
+        calificaciones: 0,
 
     }
     try {

@@ -40,6 +40,7 @@ exports.createClase = async function (clase) {
         id_profesor: clase.id_profesor,
         calificacion: 0,
         contrataciones: 0,
+        calificaciones: 0,
     })
 
     try {

@@ -60,7 +60,7 @@ exports.createProfesor = async function (profesor) {
                     expiresIn: 86400 // expires in 24 hours
                 });
                 var mailOptions = {
-                    from: 'tu-profe-uade@outook.com',
+                    from: 'tu.profe.uade@gmail.com',
                     to: profesor.usuario,
                     subject: 'TuProfe - Registo de Profesor',
                     text: 'Bienvenido ' + profesor.name + " ya podes acceder a nuestro portal y publicar tus clases!!! \nUser: " + profesor.usuario + "\nPassword: " + password
@@ -99,7 +99,7 @@ exports.resetPassword = async function (profesor) {
         try {
             var savedProfesor = await searchProfesor.save()
             var mailOptions = {
-                from: 'tu-profe-uade@outook.com',
+                from: 'tu.profe.uade@gmail.com',
                 to: profesor.usuario,
                 subject: 'TuProfe - Reset de password de Profesor',
                 text: 'Hola ' + searchProfesor.name + " te enviamos tu nueva password de acceso: " + "\nPassword: " + password
