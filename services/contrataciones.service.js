@@ -388,7 +388,7 @@ exports.obtenerCometariosClase = async function (contratacion) {
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
             {$skip: paginado },
-            {$limit: 10 } 
+            {$limit: 2 } 
         ])
         
         return comentariosClase;

@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var ProfesoresController = require('../../controllers/profesores.controller');
+var UploadController = require('../../controllers/upload.controller')
 //var ContratacionesController = require('../../controllers/contrataciones.controller')
 var Authorization = require('../../auth/authorization');
 
@@ -19,10 +20,9 @@ router.post('/login/', ProfesoresController.loginProfesor)
 router.post("/actualizarprofesor",Authorization,ProfesoresController.updateProfesor)
 router.put('/resetpassword', ProfesoresController.resetPassword)  
 router.put('/setpassword', ProfesoresController.setPassword)  
-//router.put('/contrataciones', ContratacionesController.getContratacionesByProfesor)  
-
-
-
+router.post('/guardarImgUser',ProfesoresController.guardarImagenUser)
+router.post('/uploadImg',UploadController.uploadFilesImgUser);
+router.post('/imgUserByMail',ProfesoresController.getImagenUserByMail)
  
 // Export the Router
 module.exports = router;
