@@ -5,6 +5,29 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+
+
+//##########  SWAGGER ##########
+
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+const swaggerSpec = {
+  definition: {
+    openapi: "3.0.0",
+    info: {
+        title: 'Node MongoDB API',
+        version: '1.0.0'
+    },
+    servers: [
+      {
+        url: 'http://localhost:4000'
+      }
+    ]
+  },
+  apis: [`${path.join(__dirname, "./routes/api/*.js")}`],
+}
+
+
 var apiRouter = require('./routes/api'); //Custom
 var bluebird = require('bluebird');
 var fs = require('fs');
@@ -27,6 +50,11 @@ app.use(cors());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api', apiRouter);
+app.use(
+  "/api-doc",
+  swaggerUI.serve,
+  swaggerUI.setup(swaggerJsDoc(swaggerSpec))
+)
 
 
 //onsole.log("processENV",process.env);
