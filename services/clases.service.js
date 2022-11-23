@@ -141,7 +141,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             }},
             // solo clases activas
             {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
-            {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:query.calificacion}},
+            {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:{$lt : query.calificacion}}},
             
             {$project:{
                 nombreImagen:1,
@@ -161,7 +161,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
             {$skip: 0 },
-            {$limit: 30 } 
+            {$limit: 2 } 
         ])
         return ClasesFiltros;
 

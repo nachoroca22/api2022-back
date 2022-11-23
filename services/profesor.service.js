@@ -39,6 +39,7 @@ exports.createProfesor = async function (profesor) {
             var password = Math.random().toString(36).slice(2, 12)
             var hashedPassword = bcrypt.hashSync(password, 8);
             var newProfesor = new Profesor({
+                nombreImagen:"https://res.cloudinary.com/tuprofe-uade/image/upload/v1669237787/default_image_aqjwnm.png",
                 name: profesor.name,
                 apellido: profesor.apellido,
                 fechaNac: "DD/MM/AAAA",
