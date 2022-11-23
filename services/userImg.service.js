@@ -1,5 +1,6 @@
 // Gettign the Newly created Mongoose Model we just created 
 var UserImg = require('../models/UserImg.model');
+var Profesor = require('../models/profesores.model');
 
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
@@ -71,7 +72,32 @@ async function savedUserImg (newUserImg)
     throw Error("Error while Creating Imagen User")
 }
 }
+
+
 exports.createUserImg = async function (userImg) {
+    
+    var searchProfesor = await Profesor.findOne({
+        id_user: userImg.id_user
+    })
+    if(searchProfesor){
+        //subir imagen a cloudinary
+        console.log("userImg",userImg)
+        let urlImg;
+        let imagen = process.env.UPLOAD_DIR + userImg.nombreImagen;
+        cloudinary.uploader.upload(imagen, function(result) { 
+            console.log("Resultado",result);
+            //urlImg=result.url;
+            // Creating a new Mongoose Object by using the new keyword
+            
+            searchProfesor.nombreImagen = result.url
+            
+            savedUserImg(searchProfesor);
+        });   
+    }   
+}
+
+
+exports.OLDDDDDcreateUserImg = async function (userImg) {
     
     //subir imagen a cloudinary
     console.log("userImg",userImg)
@@ -89,11 +115,6 @@ exports.createUserImg = async function (userImg) {
         
         savedUserImg(newUserImg);
     });
-    
-    
-    
-    
-    
 }
 
 

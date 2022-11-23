@@ -179,12 +179,12 @@ exports.guardarImagenUser = async function (req, res) {
 
     console.log("ImgUser",req.body)
     // Id is necessary for the update
-    if (!req.body.email) {
-        return res.status(400).json({status: 400., message: "Mail must be present"})
+    if (!req.body.id_user) {
+        return res.status(400).json({status: 400., message: "id_user must be present"})
     }
 
     let userImg = {
-        email: req.body.email,
+        id_user: req.body.id_user,
         nombreImagen : req.body.nombreImagen
     }
     
@@ -209,14 +209,14 @@ exports.getImagenUserByMail = async function (req, res) {
     var limit = req.query.limit ? req.query.limit : 10;
     //obtener filtro
     var filtro = {
-        mail: req.body.email
+        id_user: req.body.id_user
     }
     try {
         var UsersImg = await UserImgService.getImagenesByUser(filtro, page, limit)
         // Return the Users list with the appropriate HTTP password Code and Message.
-        console.log("userByDni",UsersImg)
+        console.log("userByid_user",UsersImg)
         if (UsersImg.total===0)
-            return res.status(201).json({status: 201, data: UsersImg, message: "No existe Mail"});
+            return res.status(201).json({status: 201, data: UsersImg, message: "No existe id_user"});
         else
             return res.status(200).json({status: 200, data: UsersImg, message: "Succesfully Users Recieved"});
     } catch (e) {

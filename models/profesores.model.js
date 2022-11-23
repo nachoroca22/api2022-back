@@ -4,6 +4,7 @@ const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 var ProfesorSchema = new mongoose.Schema({
     id_user: Number,
+    nombreImagen: String,
     name: String,
     apellido: String,
     fechaNac: String,
@@ -11,7 +12,6 @@ var ProfesorSchema = new mongoose.Schema({
     usuario: String,
     telefono: Number,
     password: String,
-    foto: String,
     estudios: String,
     rol: String,
     presentacion: String,

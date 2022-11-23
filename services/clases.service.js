@@ -144,6 +144,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:query.calificacion}},
             
             {$project:{
+                nombreImagen:1,
                 materia:1,
                 tipoClase:1,
                 costo:1,
@@ -190,6 +191,7 @@ exports.getClaseFull = async function (query, page, limit) {
             {$match:{estado:true, id_clase:id_clase}},
             
             {$project:{
+                nombreImagen:1,
                 materia:1,
                 tipoClase:1,
                 costo:1,
