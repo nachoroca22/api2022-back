@@ -33,9 +33,12 @@ module.exports = router;
  *      Clases:
  *        type: object
  *        properties:
+ *          id_profesor:
+ *            type: string
+ *            description: id profesor
  *          materia:
  *            type: string
- *            description: Nombre de materia *
+ *            description: Nombre de materia 
  *          tipoClase:
  *            type: string
  *            description: Tipo de clase
@@ -51,6 +54,15 @@ module.exports = router;
  *          descripcion:
  *            type: string
  *            description: Descripcion de la clase
+ *          calificacion:
+ *            type: string
+ *            description: calificacion
+ *          contrataciones:
+ *            type: string
+ *            description: contrataciones
+ *          calificaciones:
+ *            type: string
+ *            description: calificaciones
  *       
  *        requiered:
  *          - materia *
@@ -59,13 +71,17 @@ module.exports = router;
  *          - frecuencia *
  *          - duracion *
  *          - descripcion *
- *        example:          
+ *        example:      
+ *          id_profesor:    
  *          materia: 
  *          tipoClase:
  *          costo:
  *          frecuencia:
  *          duracion:
  *          descripcion:
+ *          calificacion: 0
+ *          contrataciones: 0
+ *          calificaciones: 0
  *  
  *      Clasefull:
  *        type: object

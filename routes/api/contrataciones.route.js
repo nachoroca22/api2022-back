@@ -82,7 +82,22 @@ module.exports = router;
  *            description: Telefono alumno
  *          usuario_alumno:
  *            type: string
- *            description: Usuario alumno       
+ *            description: Usuario alumno  
+ *          calificacion_alumno:
+ *            type: string
+ *            description: Calificacion alumno 
+ *          estado:
+ *            type: string
+ *            description: Estado
+ *          comentario:
+ *            type: string
+ *            description: Comentario
+ *          estado_comentario:
+ *            type: string
+ *            description: Estado comentario
+ *          descargo_comentario:
+ *            type: string
+ *            description: Descargo comentario
  *        
  *        example:          
  *          id_alumno: 
@@ -99,7 +114,13 @@ module.exports = router;
  *          materia:
  *          alumno:
  *          telefono_alumno:
- *          usuario_alumno:  
+ *          usuario_alumno:
+ *          calificacion_alumno: 0
+ *          estado: 10,
+ *          comentario: ""
+ *          estado_comentario: "No aplica"
+ *          descargo_comentario: ""
+ * 
  * 
  *      Contratacion:
  *        type: object
