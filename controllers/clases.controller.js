@@ -119,11 +119,12 @@ exports.getClase = async function (req, res, next){
 
 exports.getClasesFiltros = async function (req, res, next) {
     // Check the existence of the query parameters, If doesn't exists assign a default value
-    var page = req.query.page ? req.query.page : 1
-    var limit = req.query.limit ? req.query.limit : 10;
+    //var page = req.query.page ? req.query.page : 1
+    //var limit = req.query.limit ? req.query.limit : 10;
     var filtros = req.body
     try {
-        var Clases = await ClaseService.getClasesFiltros(filtros,page, limit)
+        //var Clases = await ClaseService.getClasesFiltros(filtros,page, limit)
+        var Clases = await ClaseService.getClasesFiltros(filtros)
         // Return the Users list with the appropriate HTTP password Code and Message.
         return res.status(200).json({status: 200, data: Clases, message: "Succesfully Clases Recieved"});
     } catch (e) {

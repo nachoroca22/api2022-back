@@ -124,13 +124,14 @@ exports.getClase = async  function (clase){
         }  
 }
 
-exports.getClasesFiltros = async function (query, page, limit) {
+//exports.getClasesFiltros = async function (query, page, limit) {
+exports.getClasesFiltros = async function (query) {
     // Options setup for the mongoose paginate
-    var options = {
+   /*  var options = {
         page,
         limit
     }
-    
+     */
     try {
         var ClasesFiltros = await Clase.aggregate([
             {$lookup: {
@@ -161,7 +162,7 @@ exports.getClasesFiltros = async function (query, page, limit) {
             // para paginar en mongo
             {$setWindowFields: {output: {totalCount: {$count: {}}}}},
             {$skip: 0 },
-            {$limit: 2 } 
+            {$limit: 30 } 
         ])
         return ClasesFiltros;
 
