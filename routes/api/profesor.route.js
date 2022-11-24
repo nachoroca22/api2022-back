@@ -34,9 +34,9 @@ module.exports = router;
  *      Profesor:
  *        type: object
  *        properties:   
- *          id_user:
+ *          nombreImagen:
  *            type: string
- *            description: id profesor
+ *            description: Nombre Imagen
  *          rol:
  *            type: string
  *            description: rol
@@ -72,15 +72,15 @@ module.exports = router;
  *            description: Presentacion 
  *         
  *        example: 
- *          id_user:
- *          rol:
- *          estado:
+ *          nombreImagen:
+ *          rol: "Profesor"
+ *          estado: true
  *          fechaIngreso:     
  *          name: 
  *          apellido:
  *          usuario:
- *          fechaNac:
- *          genero:
+ *          fechaNac: "DD/MM/AAAA"
+ *          genero: "30"
  *          telefono:
  *          estudios:
  *          presentacion:
@@ -141,6 +141,15 @@ module.exports = router;
  *          telefono:
  *          estudios:
  *          presentacion: 
+ * 
+ *      Imagen:
+ *        type: object
+ *        properties:
+ *          nombreImagen:
+ *            type: string
+ *            description: Nombre de imagen          
+ *        required:
+ *          - nombreImagen *
  *      
  *      Login:
  *        type: object
@@ -340,4 +349,88 @@ module.exports = router;
  *          description: Profesor Inexistente
  *        400:
  *          description: User must be present
+ */
+/**
+ *  @swagger
+ *  /profesor/guardarImgUser/{id_user}:
+ *    post:
+ *      summary: Guardar imagen profesor
+ *      tags: [Profesor] 
+ *      parameters:
+ *        - in: patch
+ *          id: id_user
+ *          schema:
+ *            type: string
+ *          required: true   
+ *          description: id profesor 
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Imagen'      
+ *      responses:
+ *        201:
+ *          description: Imagen cargada        
+ *        400:
+ *          description: error guardar imagen
+ */
+/**
+ *  @swagger
+ *  /profesor/getImagenUserByMail/{id_user}:
+ *    post:
+ *      summary: Guardar imagen profesor
+ *      tags: [Profesor] 
+ *      parameters:
+ *        - in: patch
+ *          id: id_user
+ *          schema:
+ *            type: string
+ *          required: true   
+ *          description: id profesor 
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Imagen'      
+ *      responses:
+ *        200:
+ *          description: Succesfully Users Recieved
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: '#/components/schemas/Profesor'        
+ *        201:
+ *          description: No existe id_user
+ */
+/**
+ *  @swagger
+ *  /profesor/uploadImg/{id_user}:
+ *    post:
+ *      summary: Guardar imagen profesor
+ *      tags: [Profesor] 
+ *      parameters:
+ *        - in: patch
+ *          id: id_user
+ *          schema:
+ *            type: string
+ *          required: true   
+ *          description: id profesor 
+ *      requestBody:
+ *        required: true
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              $ref: '#/components/schemas/Imagen'     
+ *      responses:
+ *        200:
+ *          description: Files uploaded succesfully!               
+ *        201:
+ *          description: Error uploading the file
  */

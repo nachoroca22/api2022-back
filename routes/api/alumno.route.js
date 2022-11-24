@@ -32,34 +32,34 @@ module.exports = router;
  *    schemas:          
  *      Alumno:
  *        type: object
- *        properties:   
- *          id_alumno:
- *            type: string
- *            description: id alumno
+ *        properties:         
  *          rol:
  *            type: string
  *            description: rol
- *          estado:
+ *          estado_alumno:
  *            type: string
- *            description: estado 
- *          telefono:
+ *            description: Estado alumno
+ *          telefono_alumno:
  *            type: string
- *            description: Telefono                  
- *          name:
+ *            description: Telefono alumno              
+ *          name_alumno:
  *            type: string
- *            description: Nombre
- *          apellido:
+ *            description: Nombre Alumno
+ *          apellido_alumno:
  *            type: string
- *            description: Apellido
- *          usuario:
+ *            description: Apellido alumno
+ *          usuario_alumno:
  *            type: string
- *            description: Nombre de usuario     
- *          fechaNac:
+ *            description: Usuario alumno  
+ *          password:
  *            type: string
- *            description: Fecha de nacimiento
- *          genero:
+ *            description: Password alumno  
+ *          fechaNac_alumno:
  *            type: string
- *            description: Genero
+ *            description: Fecha de nacimiento alumno
+ *          genero_alumno:
+ *            type: string
+ *            description: Genero alumno
  *          nivel_primaria:
  *            type: string
  *            description: Nivel primaria          
@@ -73,20 +73,20 @@ module.exports = router;
  *            type: string
  *            description: Nivel universitario 
  *         
- *        example: 
- *          id_alumno:
- *          rol:
- *          estado:    
- *          telefono:
- *          name: 
- *          apellido:
- *          usuario:
- *          fechaNac:
- *          genero:
- *          nivel_primaria:
- *          nivel_secundaria:
- *          nivel_terciario:
- *          nivel_universitario:
+ *        example:           
+ *          rol: "Alumno"
+ *          estado_alumno: true
+ *          telefono_alumno: null
+ *          name_alumno: string
+ *          apellido_alumno: string
+ *          usuario_alumno: string
+ *          password: hashedPassword
+ *          fechaNac_alumno: "DD/MM/AAAA"
+ *          genero_alumno: "30"
+ *          nivel_primaria: "30"
+ *          nivel_secundaria: "30"
+ *          nivel_terciario: "30"
+ *          nivel_universitario: "30"
  * 
  *      AltaAlumno:
  *        type: object
