@@ -142,7 +142,7 @@ exports.getClasesFiltros = async function (query) {
             }},
             // solo clases activas
             {$replaceRoot:{newRoot:{$mergeObjects:[{$arrayElemAt:['$clases',0]},"$$ROOT"]}}},
-            {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:{$lt : query.calificacion}}},
+            {$match:{estado:true, materia:query.materia, frecuencia:query.frecuencia, calificacion:{$lte : query.calificacion}}},
             
             {$project:{
                 nombreImagen:1,
